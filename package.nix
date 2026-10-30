@@ -21,6 +21,7 @@ buildGoModule (finalAttrs: {
 
   nativeBuildInputs = with pkgs; [
     pkg-config
+    makeWrapper
   ];
 
   buildInputs = with pkgs; [
@@ -36,13 +37,31 @@ buildGoModule (finalAttrs: {
   vendorHash = "sha256-m3hDyDHtkeKh+IXlAyeCdxapji57szpsfB5mXjxbmv4=";
 
   postInstall = ''
-    binDir="$out/bin"
-    mv "$binDir/src" "$binDir/Ikemen_GO_Linux"
+    bin="$out/bin"
+    share="$out/share/ikemen-go"
 
-    cp -r data external font "$binDir/"
+    mv "$bin/src" "$bin/Ikemen_GO_Linux"
+    mkdir -p "$share"
+
+    cp -r data external font "$share"
+
+    makeWrapper "$bin/Ikemen_GO_Linux" "$bin/ikemen-go" \
+      --set RESOURCES "$share" \
+      --prefix PATH : "${lib.makeBinPath [ pkgs.coreutils ]}" \
+      --run '
+        game="''${XDG_DATA_HOME:-$HOME/.local/share}/ikemen-go"
+        initFlag=".init"
+
+        mkdir -p "$game"
+
+        cp -rn --no-preserve=mode "$RESOURCES/." "$game"
+
+        cd "$game"
+      '
   '';
 
   meta = {
+    mainProgram = "ikemen-go";
     description = "Ikemen GO is an open source fighting game engine that supports resources from the M.U.G.E.N engine.";
     homepage = "https://github.com/ikemen-engine/Ikemen-GO";
     license = lib.licenses.mit;
