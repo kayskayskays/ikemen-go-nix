@@ -17,7 +17,7 @@ buildGoModule (finalAttrs: {
 
   env.GOEXPERIMENT = "arenas";
 
-  subPackages = ["src"];
+  subPackages = [ "src" ];
 
   nativeBuildInputs = with pkgs; [
     pkg-config
@@ -59,6 +59,9 @@ buildGoModule (finalAttrs: {
     mainProgram = "ikemen-go";
     description = "Ikemen GO is an open source fighting game engine that supports resources from the M.U.G.E.N engine.";
     homepage = "https://github.com/ikemen-engine/Ikemen-GO";
-    license = with lib.licenses; [ mit asl20 ];
+    license = with lib.licenses; [
+      mit
+      asl20
+    ];
   };
 })
