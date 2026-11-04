@@ -3,19 +3,21 @@
   bash,
   buildGoModule,
   fetchFromGitHub,
-  pkg-config,
   makeWrapper,
-  libGL,
-  vulkan-headers,
+  pkg-config,
+  ffmpeg,
   gtk3,
+  libGL,
   libx11,
   libxmp,
   SDL2,
-  ffmpeg,
+  vulkan-headers,
 }:
 buildGoModule (finalAttrs: {
   pname = "ikemen-go";
   version = "1.0.0";
+
+  __structuredAttrs = true;
 
   src = fetchFromGitHub {
     owner = "ikemen-engine";
@@ -24,26 +26,26 @@ buildGoModule (finalAttrs: {
     hash = "sha256-1GbSWQb+vn5R8MJIAQWmSdFHtP1hZ6nn6HGFSVtRkWI=";
   };
 
-  env.GOEXPERIMENT = "arenas";
+  vendorHash = "sha256-m3hDyDHtkeKh+IXlAyeCdxapji57szpsfB5mXjxbmv4=";
 
   subPackages = [ "src" ];
 
+  env.GOEXPERIMENT = "arenas";
+
   nativeBuildInputs = [
-    pkg-config
     makeWrapper
+    pkg-config
   ];
 
   buildInputs = [
-    libGL
-    vulkan-headers
+    ffmpeg
     gtk3
+    libGL
     libx11
     libxmp
     SDL2
-    ffmpeg
+    vulkan-headers
   ];
-
-  vendorHash = "sha256-m3hDyDHtkeKh+IXlAyeCdxapji57szpsfB5mXjxbmv4=";
 
   postInstall =
     let
@@ -90,10 +92,8 @@ buildGoModule (finalAttrs: {
     '';
 
   meta = {
-    mainProgram = "ikemen-go";
     description = "Open-source fighting game engine compatible with M.U.G.E.N resources";
     homepage = "https://github.com/ikemen-engine/Ikemen-GO";
-
     license =
       with lib.licenses;
       AND [
@@ -103,5 +103,6 @@ buildGoModule (finalAttrs: {
         cc-by-nc-30
         zlib
       ];
+    mainProgram = "ikemen-go";
   };
 })
