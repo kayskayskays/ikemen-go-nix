@@ -53,6 +53,13 @@ buildGoModule (finalAttrs: {
         rev = "11d6ea7223fc15209664730503412841045f7939";
         hash = "sha256-0RNO+70yBgY6+u/p7lG/1DZo3nq7DbRXwNoPgdPsg6g=";
       };
+
+      controllerDb = fetchFromGitHub {
+        owner = "mdqinc";
+        repo = "SDL_GameControllerDB";
+        rev = "07af1d50187e94c861c9f9f5d8a55b148f11306b";
+        hash = "sha256-zvT8MFRGxC8Q3yMONUBIVhpMSbV/dTtiA5UhVBab3bc=";
+      };
     in
     ''
       bin="$out/bin"
@@ -69,11 +76,12 @@ buildGoModule (finalAttrs: {
         cp -R "${screenpack}/$dir" "$resources"
       done
 
-      cp src/resources/defaultMotif.ini "$resources/data/system.base.def"
+      cp "${controllerDb}/gamecontrollerdb.txt" "$resources/external"
 
       mkdir -p "$licenses"
       cp LICENCE.txt "$licenses/Ikemen-GO.txt"
       cp "${screenpack}/LICENCE.txt" "$licenses/Ikemen-GO-Screenpack.txt"
+      cp "${controllerDb}/LICENSE" "$licenses/SDL_GameControllerDB.txt"
 
       makeWrapper "${bash}/bin/bash" "$bin/ikemen-go" \
         --add-flags "${./ikemen-go.sh}" \
@@ -93,6 +101,7 @@ buildGoModule (finalAttrs: {
         asl20
         cc-by-30
         cc-by-nc-30
+        zlib
       ];
   };
 })
