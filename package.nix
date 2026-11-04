@@ -77,7 +77,7 @@ buildGoModule (finalAttrs: {
 
       makeWrapper "${bash}/bin/bash" "$bin/ikemen-go" \
         --add-flags "${./ikemen-go.sh}" \
-        --set ENGINE "$bin/Ikemen_GO_Linux"
+        --set ENGINE "$bin/Ikemen_GO_Linux" \
         --set RESOURCES "$resources"
     '';
 
