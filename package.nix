@@ -63,10 +63,10 @@ buildGoModule (finalAttrs: {
       mv "$bin/src" "$bin/Ikemen_GO_Linux"
 
       mkdir -p "$resources"
-      cp -r data external font "$resources"
+      cp -R data external font "$resources"
 
       for dir in chars data font sound stages video; do
-        cp -r "${screenpack}/$dir" "$resources"
+        cp -R "${screenpack}/$dir" "$resources"
       done
 
       cp src/resources/defaultMotif.ini "$resources/data/system.base.def"
