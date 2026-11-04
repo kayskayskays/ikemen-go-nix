@@ -11,7 +11,7 @@
       system = "x86_64-linux";
       pkgs = nixpkgs.legacyPackages.${system};
 
-      ikemen-go = pkgs.callPackage ./package.nix { inherit pkgs; };
+      ikemen-go = pkgs.callPackage ./package.nix { };
     in
     {
       packages.${system} = {
